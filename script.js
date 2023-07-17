@@ -8,3 +8,8 @@ function substract (a,b) {
     return result;
 };
 
+function multiply (a,b) {
+    let result = a * b;
+    return result;
+};
+
