@@ -1,4 +1,10 @@
 function add (a,b) {
-    return result = a + b;
+    let result = a + b;
+    return result;
 };
-console.log(add(7,8));
+
+function substract (a,b) {
+    let result = a - b;
+    return result;
+};
+
