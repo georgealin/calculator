@@ -213,6 +213,38 @@ substractButton.addEventListener('click', function (){
         memoryDisplay.textContent = secondNumber + operator;
     }
 })
+
+const multiplyButton = document.getElementById('key-multiply');
+multiplyButton.addEventListener('click', function () {
+    if (countAdd === 0 && firstNumber && countEqual == 0) {
+        secondNumber = firstNumber;
+        operator = '*';
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        num =[];
+        createFirstNumber();
+        countAdd++;
+    } else if (firstNumber && countEqual > 0 && countAdd == 0) {
+        operator = '*';
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        num =[];
+        createFirstNumber();
+        countAdd++;
+    } else if (countAdd >=1 && firstNumber) {
+        doEqual();
+        operator = '*';
+        num =[];
+        createFirstNumber();
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        countAdd++;
+    } else if (firstNumber !== firstNumber) {
+        operator = '*';
+        memoryDisplay.textContent = secondNumber + operator;
+    }
+})
+
 let result;
 const equalButton = document.getElementById('key-equal');
 equalButton.addEventListener('click', doTotalEqual);
