@@ -4,17 +4,17 @@ function add (a,b) {
 };
 
 function substract (a,b) {
-    let result = b - a;
+    let result = (parseFloat(b) * 10 - parseFloat(a) * 10) / 10;
     return result;
 };
 
 function multiply (a,b) {
-    let result = a * b;
+    let result = ((parseFloat(a) * 10) * (parseFloat(b) * 10)) / 100;
     return result;
 };
 
 function divide (a,b) {
-    let result = a / b;
+    let result = parseFloat(b) / parseFloat(a);
     return result;
 };
 
@@ -241,6 +241,37 @@ multiplyButton.addEventListener('click', function () {
         countAdd++;
     } else if (firstNumber !== firstNumber) {
         operator = '*';
+        memoryDisplay.textContent = secondNumber + operator;
+    }
+})
+
+const divideButton = document.getElementById('key-divide');
+divideButton.addEventListener('click', function () {
+    if (countAdd === 0 && firstNumber && countEqual == 0) {
+        secondNumber = firstNumber;
+        operator = '/';
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        num =[];
+        createFirstNumber();
+        countAdd++;
+    } else if (firstNumber && countEqual > 0 && countAdd == 0) {
+        operator = '/';
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        num =[];
+        createFirstNumber();
+        countAdd++;
+    } else if (countAdd >=1 && firstNumber) {
+        doEqual();
+        operator = '/';
+        num =[];
+        createFirstNumber();
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        countAdd++;
+    } else if (firstNumber !== firstNumber) {
+        operator = '/';
         memoryDisplay.textContent = secondNumber + operator;
     }
 })
