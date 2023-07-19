@@ -17,6 +17,7 @@ html {
     flex-direction: column;
     justify-content: end;
     align-items: end;
+    gap: 20px;
 }
 #display {
     font-size: 50px;
@@ -25,10 +26,13 @@ html {
     min-height: 65px;
     height: auto;
     overflow: visible;
+    font-size: 40px;
 }
 
 #memory {
-    font-size: 30px;
+    font-size: 25px;
+    color: red;
+    font-weight: bold;
 }
 #calculator {
     display: flex;
