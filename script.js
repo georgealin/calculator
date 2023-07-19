@@ -1,5 +1,5 @@
 function add (a,b) {
-    let result = (parseFloat(a) * 10 + parseFloat(b) * 10) / 10;
+    let result = +((parseFloat(a) * 10 + parseFloat(b) * 10) / 10).toFixed(4);
     return result;
 };
 
@@ -33,7 +33,34 @@ function operate (operator, firstNumber, secondNumber) {
 };
 
 let num = [];
-
+window.addEventListener('keydown', function (e) {
+    const pressedButton = document.querySelector(`button[data-key="${e.code}"]`);
+    if (pressedButton) {
+        if (e.code == 'Backspace') {
+            num.pop();
+            createFirstNumber();
+            displayNumber();
+        } else if (e.code == 'NumpadAdd') {
+            usedOperator = '+';
+            clickButton();
+        } else if (e.code == 'NumpadSubtract') {
+            usedOperator = '-';
+            clickButton();
+        } else if (e.code == 'NumpadMultiply') {
+            usedOperator = '*';
+            clickButton();
+        } else if (e.code == 'NumpadDivide') {
+            usedOperator = '/';
+            clickButton();
+        } else if (e.code == 'NumpadEnter'){
+            doTotalEqual();
+        } else {
+            num.push(e.key);
+            createFirstNumber();
+            displayNumber();    
+        }
+    }
+});
 const keyOne = document.getElementById('key-one');
 keyOne.addEventListener('click', function pressOne () {
     num.push(1);
@@ -113,15 +140,17 @@ keyPoint.addEventListener('click', function pressPoint () {
 });
 
 function createFirstNumber () {
+    if (num.length < 12) {
     let n = num.join('');
 firstNumber = parseFloat(n);
-
-
+    } else {
+        display.textContent = 'ERROR - To big Number';
+    }
 }
 
 let display = document.getElementById('display');
 function displayNumber () {
-    if (firstNumber) {
+    if (firstNumber || firstNumber == 0) {
         display.textContent = firstNumber;
     } else {
         display.textContent = '';
@@ -139,6 +168,7 @@ function clearDisplay () {
     createFirstNumber();
     operator = '';
     countEqual = 0;
+    countAdd = 0;
 };
 
 const deleteButton = document.getElementById('key-delete');
@@ -153,48 +183,19 @@ const memoryDisplay = document.getElementById('memory');
 
 const addButton =  document.getElementById('key-add');
 let countAdd = 0;
-addButton.addEventListener('click',function () {
-    if (countAdd === 0 && firstNumber && countEqual == 0) {
-        secondNumber = firstNumber;
-        operator = '+';
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        num =[];
-        createFirstNumber();
-        countAdd++;
-    } else if (firstNumber && countEqual > 0 && countAdd == 0) {
-        operator = '+';
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        num =[];
-        createFirstNumber();
-        countAdd++;
-    } else if (countAdd >=1 && firstNumber) {
-        doEqual();
-        operator = '+';
-        num =[];
-        createFirstNumber();
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        countAdd++;
-    } else if (firstNumber !== firstNumber) {
-        operator = '+';
-        memoryDisplay.textContent = secondNumber + operator;
-    }
-});
+let usedOperator;
 
-const substractButton = document.getElementById('key-substract');
-substractButton.addEventListener('click', function (){
+function clickButton() {
     if (countAdd === 0 && firstNumber && countEqual == 0) {
         secondNumber = firstNumber;
-        operator = '-';
+        operator = usedOperator;
         memoryDisplay.textContent = secondNumber + operator;
         display.textContent = '';
         num =[];
         createFirstNumber();
         countAdd++;
     } else if (firstNumber && countEqual > 0 && countAdd == 0) {
-        operator = '-';
+        operator = usedOperator;
         memoryDisplay.textContent = secondNumber + operator;
         display.textContent = '';
         num =[];
@@ -202,79 +203,41 @@ substractButton.addEventListener('click', function (){
         countAdd++;
     } else if (countAdd >=1 && firstNumber) {
         doEqual();
-        operator = '-';
+        operator = usedOperator;
         num =[];
         createFirstNumber();
         memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        countAdd++;
+        //display.textContent = '';
+       // countAdd++;
     } else if (firstNumber !== firstNumber) {
-        operator = '-';
+        operator = usedOperator;
         memoryDisplay.textContent = secondNumber + operator;
-    }
+    }  
+}
+
+addButton.addEventListener('click', function () {
+   usedOperator = '+';
+   clickButton();
 })
+
+
+const subtractButton = document.getElementById('key-subtract');
+subtractButton.addEventListener('click', function () {
+    usedOperator = '-';
+    clickButton();
+});
 
 const multiplyButton = document.getElementById('key-multiply');
 multiplyButton.addEventListener('click', function () {
-    if (countAdd === 0 && firstNumber && countEqual == 0) {
-        secondNumber = firstNumber;
-        operator = '*';
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        num =[];
-        createFirstNumber();
-        countAdd++;
-    } else if (firstNumber && countEqual > 0 && countAdd == 0) {
-        operator = '*';
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        num =[];
-        createFirstNumber();
-        countAdd++;
-    } else if (countAdd >=1 && firstNumber) {
-        doEqual();
-        operator = '*';
-        num =[];
-        createFirstNumber();
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        countAdd++;
-    } else if (firstNumber !== firstNumber) {
-        operator = '*';
-        memoryDisplay.textContent = secondNumber + operator;
-    }
-})
+    usedOperator = '*';
+    clickButton();
+});
 
 const divideButton = document.getElementById('key-divide');
 divideButton.addEventListener('click', function () {
-    if (countAdd === 0 && firstNumber && countEqual == 0) {
-        secondNumber = firstNumber;
-        operator = '/';
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        num =[];
-        createFirstNumber();
-        countAdd++;
-    } else if (firstNumber && countEqual > 0 && countAdd == 0) {
-        operator = '/';
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        num =[];
-        createFirstNumber();
-        countAdd++;
-    } else if (countAdd >=1 && firstNumber) {
-        doEqual();
-        operator = '/';
-        num =[];
-        createFirstNumber();
-        memoryDisplay.textContent = secondNumber + operator;
-        display.textContent = '';
-        countAdd++;
-    } else if (firstNumber !== firstNumber) {
-        operator = '/';
-        memoryDisplay.textContent = secondNumber + operator;
-    }
-})
+    usedOperator = '/';
+    clickButton();
+});
 
 let result;
 const equalButton = document.getElementById('key-equal');
@@ -282,22 +245,27 @@ equalButton.addEventListener('click', doTotalEqual);
 let countEqual = 0;
 function doTotalEqual () {
     countAdd = 0;
-    countEqual = 1;
+    
     doEqual();
+    countEqual = 0;
+    num = [];
+    createFirstNumber();
+    operator = '';
+
 }
     function doEqual (result) {
     countEqual++;
     if (firstNumber && secondNumber) {
         countEqual++;
-        result = operate(operator, firstNumber,secondNumber);
+        result = operate(operator, firstNumber, secondNumber);
         display.textContent = result;
-        memoryDisplay.textContent = secondNumber + operator + firstNumber;
+        memoryDisplay.textContent = secondNumber + operator + firstNumber + '=';
         secondNumber = result;
     }else if (firstNumber === NaN && secondNumber) {
         firstNumber = secondNumber;
         result = operate(operator, firstNumber,secondNumber);
               display.textContent = result;
-              memoryDisplay.textContent = secondNumber + operator + firstNumber;
+              memoryDisplay.textContent = secondNumber + operator + firstNumber + '=';
               secondNumber = result;
               num =[];
               createFirstNumber(); 
@@ -313,3 +281,34 @@ function doTotalEqual () {
     }
 }
 disableButtons();*/
+
+
+/*addButton.addEventListener('click',function () {
+    if (countAdd === 0 && firstNumber && countEqual == 0) {
+        secondNumber = firstNumber;
+        operator = '+';
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        num =[];
+        createFirstNumber();
+        countAdd++;
+    } else if (firstNumber && countEqual > 0 && countAdd == 0) {
+        operator = '+';
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        num =[];
+        createFirstNumber();
+        countAdd++;
+    } else if (countAdd >=1 && firstNumber) {
+        doEqual();
+        operator = '+';
+        num =[];
+        createFirstNumber();
+        memoryDisplay.textContent = secondNumber + operator;
+        display.textContent = '';
+        countAdd++;
+    } else if (firstNumber !== firstNumber) {
+        operator = '+';
+        memoryDisplay.textContent = secondNumber + operator;
+    }
+});*/
